@@ -39,7 +39,7 @@ In all other cases the packages will have to be build from sources in a Catkin w
 cd $HOME/catkin_ws/src
 
 # retrieve the sources (replace '$ROS_DISTRO' with the ROS version you are using)
-git clone -b $ROS_DISTRO-devel https://github.com/ros-industrial/universal_robot.git
+git clone -b $ROS_DISTRO-devel https://github.com/junyaoshi/universal_robot.git
 
 cd $HOME/catkin_ws
 
@@ -117,6 +117,12 @@ For starting up RViz with a configuration including the MoveIt! Motion Planning 
 
 ```roslaunch ur5_moveit_config moveit_rviz.launch config:=true```
 
+___MoveIt! of UR5 and suction gripper with a simulated robot___  
+Again, you can use MoveIt! to control the simulated robot.  
+
+For setting up the MoveIt! nodes to allow motion planning run:
+
+```roslaunch ur5_suction_moveit_config demo.launch sim:=true```
 
 NOTE:  
 As MoveIt! seems to have difficulties with finding plans for the UR with full joint limits [-2pi, 2pi], there is a joint_limited version using joint limits restricted to [-pi,pi]. In order to use this joint limited version, simply use the launch file arguments 'limited', i.e.:  
