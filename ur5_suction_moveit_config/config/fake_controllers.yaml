@@ -10,3 +10,6 @@ controller_list:
   - name: fake_suction_controller
     joints:
       []
+  - name: fake_end_effector_controller
+    joints:
+      []

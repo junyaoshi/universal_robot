@@ -1,11 +1,11 @@
 moveit_setup_assistant_config:
   URDF:
     package: ur_description
-    relative_path: urdf/ur5-suction-merged.urdf
+    relative_path: urdf/ur5_suction.urdf
     xacro_args: "--inorder "
   SRDF:
-    relative_path: config/ur5.srdf
+    relative_path: config/ur5_suction_head.srdf
   CONFIG:
     author_name: Junyao Shi
     author_email: junyao.shi@columbia.edu
-    generated_timestamp: 1600749764
+    generated_timestamp: 1600999207

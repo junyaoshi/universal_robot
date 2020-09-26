@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <!-- Here we define the 2 parameters of the macro -->
+  <xacro:macro name="suction" params="prefix connected_to">
+    <!-- Create a fixed joint with a parameterized name. -->
+    <joint name="tool0_suctionBaseLink" type="fixed">
+      <!-- The parent link must be read from the robot model it is attached to. -->
+      <parent link="${connected_to}"/>
+      <child link="suctionBaseLink"/>
+      <!-- The tool is directly attached to the flange. -->
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </joint>
+    <link name="suctionBaseLink">
+        <contact>
+            <lateral_friction value="1.0" />
+            <rolling_friction value="0.0001" />
+            <inertia_scaling value="3.0" />
+        </contact>
+        
+<inertial>
+            <origin rpy="0 0 0" xyz="0 0 0" />
+            <mass value=".1" />
+            <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+        </inertial>
+
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0" />
+            <geometry>
+                <mesh filename="package://ur_description/urdf/suction/base.obj" scale="0.001 0.001 0.001" />
+            </geometry>
+            <material name="DarkGrey" />
+        </visual>
+    </link>
+    <link name="suctionMidLink">
+        <contact>
+            <lateral_friction value="1.0" />
+            <rolling_friction value="0.0001" />
+            <inertia_scaling value="3.0" />
+        </contact>
+        
+<inertial>
+            <origin rpy="0 0 0" xyz="0 0 0" />
+            <mass value=".1" />
+            <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+        </inertial>
+
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0" />
+            <geometry>
+                <mesh filename="package://ur_description/urdf/suction/mid.obj" scale="0.001 0.001 0.001" />
+            </geometry>
+            <material name="DarkGrey" />
+        </visual>
+        <collision>
+            <geometry>
+                <mesh filename="package://ur_description/urdf/suction/mid.obj" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="suctionBaseLink-suctionMidLink" type="fixed">
+        <origin rpy="0 0 0" xyz="0 0 0.025" />
+        <parent link="suctionBaseLink" />
+        <child link="suctionMidLink" />
+    </joint>
+    <link name="headLink">
+        <contact>
+            <lateral_friction value="1.0" />
+            <rolling_friction value="0.0001" />
+            <inertia_scaling value="3.0" />
+        </contact>
+        
+<inertial>
+            <origin rpy="0 0 0" xyz="0 0 0" />
+            <mass value=".1" />
+            <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+        </inertial>
+
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0" />
+            <geometry>
+                <mesh filename="package://ur_description/urdf/suction/head.obj" scale="0.001 0.001 0.001" />
+            </geometry>
+            <material name="darkgrey">
+                <color rgba="0.2 0.2 0.2 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin rpy="0 0 0" xyz="0 0 0" />
+            <geometry>
+                <mesh filename="package://ur_description/urdf/suction/head.obj" scale="0.001 0.001 0.001" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="tipJoint" type="fixed">
+        <parent link="headLink" />
+        <child link="tipLink" />
+        <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.029" />
+        <axis xyz="0 0 1" />
+        <limit effort="150.0" lower="-6.28318530718" upper="6.28318530718" velocity="3.15" />
+        <dynamics damping="10.0" friction="0.0" />
+    </joint>
+    <link name="tipLink">
+        <contact>
+            <lateral_friction value="1.0" />
+            <rolling_friction value="0.0001" />
+            <inertia_scaling value="3.0" />
+        </contact>
+        
+<inertial>
+            <origin rpy="0 0 0" xyz="0 0 0" />
+            <mass value=".1" />
+            <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" izz="1" />
+        </inertial>
+
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0" />
+            <geometry>
+                <mesh filename="package://ur_description/urdf/suction/tip.obj" scale="0.001 0.001 0.001" />
+            </geometry>
+            <material name="blue">
+                <color rgba="0.18039216, 0.50588235, 0.77254902 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin rpy="0 0 0" xyz="0 0 0" />
+            <!-- <geometry>
+        <mesh filename="package://ur_description/urdf/tip.obj" scale="0.001 0.001 0.001"/>
+      </geometry> -->
+            <geometry>
+                <cylinder length="0.028" radius="0.001" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="suctionMidLink-tool_tip" type="fixed">
+        <origin rpy="0 0 0" xyz="0 0 0.08" />
+        <parent link="suctionMidLink" />
+        <child link="headLink" />
+    </joint>
+
+    <!-- TCP frame -->
+    <joint name="${prefix}tcp_joint" type="fixed">
+      <origin xyz="0 0 0.116" rpy="0 0 0"/>
+      <parent link="tipLink"/>
+      <child link="${prefix}tcp"/>
+    </joint>
+    <link name="${prefix}tcp"/>
+
+  </xacro:macro>
+</robot>
